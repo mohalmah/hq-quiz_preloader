@@ -17,6 +17,15 @@ overlay.style.cssText = `
 const svgImage = document.createElement('img');
 svgImage.id = 'svgImage';
 svgImage.src = 'https://cdn.jsdelivr.net/gh/jasminder/flutter_preloader/8.svg';
+svgImage.style.cssText = `
+    max-width: 100%;
+    max-height: 100%;
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+`;
 svgImage.style.display = 'none';
 
 // Append the elements to the body
@@ -33,7 +42,7 @@ function hideOverlay() {
 document.addEventListener('DOMContentLoaded', () => {
     // Replace the following lines with the actual code that loads your external JS files
     // For demonstration purposes, we'll use a setTimeout to simulate loading external JS files.
-    setTimeout(hideOverlay, 300); // Replace with your actual loading code.
+    setTimeout(hideOverlay, 100); // Replace with your actual loading code.
 });
 
 // Fallback: If all external resources are loaded and the DOMContentLoaded event doesn't fire,
