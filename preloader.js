@@ -17,7 +17,6 @@ overlay.style.cssText = `
 const svgImage = document.createElement('img');
 svgImage.id = 'svgImage';
 svgImage.src = 'https://cdn.jsdelivr.net/gh/mohalmah/hq-quiz_preloader/hq_loader.svg';
-
 svgImage.style.cssText = `
     max-width: 100%;
     max-height: 100%;
@@ -27,25 +26,58 @@ svgImage.style.cssText = `
     left: 50%;
     transform: translate(-50%, -50%);
 `;
-svgImage.style.display = 'none';
 
-// Append the elements to the body
+// Create text container and lines
+const textContainer = document.createElement('div');
+textContainer.id = 'textContainer';
+textContainer.style.cssText = `
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    display: none;
+`;
+
+const textLines = [
+    'Checking available seats',
+    '18 seats available',
+    '1 seat reserved for you',
+    'Please complete quiz to check if you’re a fit',
+    'Quiz starting now…'
+];
+
+textLines.forEach((line, index) => {
+    const p = document.createElement('p');
+    p.id = `textLine${index + 1}`;
+    p.style.cssText = 'margin: 0; padding: 0; font-size: 1.2em;';
+    p.innerText = line;
+    textContainer.appendChild(p);
+});
+
+// Append elements to the body
 document.body.appendChild(overlay);
 document.body.appendChild(svgImage);
+document.body.appendChild(textContainer);
 
-// Function to hide the overlay and display the SVG
+// Function to hide the overlay and display the SVG and text
 function hideOverlay() {
     overlay.style.display = 'none';
     svgImage.style.display = 'block';
+    textContainer.style.display = 'block';
+    
+    // Random number for available seats
+    const randomSeats = Math.floor(Math.random() * 20);
+    document.getElementById('textLine2').innerText = `${randomSeats} seats available`;
+
+    // Show text lines with delay
+    textLines.forEach((_, index) => {
+        setTimeout(() => {
+            document.getElementById(`textLine${index + 1}`).style.display = 'block';
+        }, (index + 1) * 1000);
+    });
 }
 
-// Add an event listener to hide the overlay when all external JS files are loaded
-document.addEventListener('DOMContentLoaded', () => {
-    // Replace the following lines with the actual code that loads your external JS files
-    // For demonstration purposes, we'll use a setTimeout to simulate loading external JS files.
-    setTimeout(hideOverlay, 100); // Replace with your actual loading code.
-});
-
-// Fallback: If all external resources are loaded and the DOMContentLoaded event doesn't fire,
-// we'll still hide the overlay when the window's load event is triggered.
+// Event listeners
+document.addEventListener('DOMContentLoaded', hideOverlay);
 window.addEventListener('load', hideOverlay);
