@@ -1,7 +1,7 @@
 // Create a style element for our CSS
 const style = document.createElement('style');
 style.textContent = `
-    #loader {
+    #custom-loader {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -11,7 +11,7 @@ style.textContent = `
         width: 100%;
         height: 100%;
         background-color: #f0f0f0;
-        z-index: 999;
+        z-index: 9999;
     }
     .container {
         text-align: center;
@@ -19,14 +19,14 @@ style.textContent = `
         max-width: 300px;
     }
     h1 {
-        font-size: 18px;
+        font-size: 24px;
         margin-bottom: 20px;
     }
     .block {
         background-color: white;
         border-radius: 10px;
-        padding: 10px;
-        margin: 10px 0;
+        padding: 15px;
+        margin: 15px 0;
         opacity: 0;
         transform: translateY(20px);
         transition: opacity 0.5s, transform 0.5s;
@@ -57,73 +57,64 @@ style.textContent = `
         transition: width 0.5s ease-out;
         border-radius: 7.5px;
     }
-    @media (max-width: 600px) {
-        .container {
-            width: 85%;
-        }
-        .block {
-            font-size: 14px;
-        }
-    }
 `;
 document.head.appendChild(style);
 
-// Create the overlay element
-const overlay = document.createElement('div');
-overlay.id = 'loader';
+// Create and show the overlay immediately
+function createAndShowOverlay() {
+    const overlay = document.createElement('div');
+    overlay.id = 'custom-loader';
 
-// Create the container for all content
-const container = document.createElement('div');
-container.className = 'container';
+    const container = document.createElement('div');
+    container.className = 'container';
 
-// Create and append the title
-const title = document.createElement('h1');
-title.textContent = "Let's build your ideal 10 min haircare routine ✨";
-container.appendChild(title);
+    const title = document.createElement('h1');
+    title.textContent = "Let's build your ideal 10 min haircare routine ✨";
+    container.appendChild(title);
 
-// Create the blocks
-const blockTexts = [
-    "🚫 No more hidden harmful ingredients.",
-    "🌱 Reduced hair loss and new baby hair growth.",
-    "🔬 Split ends that don't come back.",
-    "💛 The best of science, made easy at home."
-];
+    const blockTexts = [
+        "🚫 No more hidden harmful ingredients.",
+        "🌱 Reduced hair loss and new baby hair growth.",
+        "🔬 Split ends that don't come back.",
+        "💛 The best of science, made easy at home."
+    ];
 
-blockTexts.forEach((text, index) => {
-    const block = document.createElement('div');
-    block.className = 'block';
-    block.id = `block${index + 1}`;
-    block.textContent = text;
-    container.appendChild(block);
-});
+    blockTexts.forEach((text, index) => {
+        const block = document.createElement('div');
+        block.className = 'block';
+        block.id = `block${index + 1}`;
+        block.textContent = text;
+        container.appendChild(block);
+    });
 
-// Create the loader container
-const loaderContainer = document.createElement('div');
-loaderContainer.className = 'loader-container';
+    const loaderContainer = document.createElement('div');
+    loaderContainer.className = 'loader-container';
 
-// Create and append the loader text
-const loaderText = document.createElement('div');
-loaderText.className = 'loader-text';
-loaderText.textContent = 'Personal space loading';
-loaderContainer.appendChild(loaderText);
+    const loaderText = document.createElement('div');
+    loaderText.className = 'loader-text';
+    loaderText.textContent = 'Personal space loading';
+    loaderContainer.appendChild(loaderText);
 
-// Create the loader bar
-const loader = document.createElement('div');
-loader.className = 'loader';
+    const loader = document.createElement('div');
+    loader.className = 'loader';
 
-const loaderBar = document.createElement('div');
-loaderBar.className = 'loader-bar';
+    const loaderBar = document.createElement('div');
+    loaderBar.className = 'loader-bar';
 
-loader.appendChild(loaderBar);
-loaderContainer.appendChild(loader);
-container.appendChild(loaderContainer);
+    loader.appendChild(loaderBar);
+    loaderContainer.appendChild(loader);
+    container.appendChild(loaderContainer);
 
-// Append the container to the overlay
-overlay.appendChild(container);
+    overlay.appendChild(container);
+    document.body.appendChild(overlay);
 
-// Function to animate blocks and update loader
+    // Start animation
+    animateBlocksAndLoader();
+}
+
 function animateBlocksAndLoader() {
     const blocks = document.querySelectorAll('.block');
+    const loaderBar = document.querySelector('.loader-bar');
     const totalBlocks = blocks.length;
     let delay = 0;
 
@@ -132,27 +123,21 @@ function animateBlocksAndLoader() {
             block.style.opacity = '1';
             block.style.transform = 'translateY(0)';
             
-            // Update loader bar
             const progress = ((index + 1) / totalBlocks) * 100;
             loaderBar.style.width = `${progress}%`;
         }, delay);
 
-        delay += 1250; // 1.25 seconds between each block
+        delay += 1250;
     });
-
-    // Hide overlay after all blocks are animated
-    setTimeout(() => {
-        overlay.style.display = 'none';
-    }, delay);
 }
 
-// Function to show the overlay
-function showOverlay() {
-    document.body.appendChild(overlay);
-    // Force a reflow to ensure styles are applied immediately
-    overlay.offsetHeight;
-    animateBlocksAndLoader();
-}
+// Create and show overlay immediately
+createAndShowOverlay();
 
-// Add event listener to show overlay when DOM is loaded
-document.addEventListener('DOMContentLoaded', showOverlay);
+// Function to hide the overlay (to be called by Flutter when it's ready)
+window.hideCustomLoader = function() {
+    const loader = document.getElementById('custom-loader');
+    if (loader) {
+        loader.style.display = 'none';
+    }
+};
