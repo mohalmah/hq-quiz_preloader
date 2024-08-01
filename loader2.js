@@ -11,7 +11,7 @@ style.textContent = `
         width: 100%;
         height: 100%;
         background-color: #f0f0f0;
-        z-index: 9999;
+        z-index: 2147483647; /* Maximum z-index value */
     }
     .container {
         text-align: center;
@@ -131,7 +131,7 @@ function animateBlocksAndLoader() {
     });
 }
 
-// Create and show overlay immediately
+// Create and show overlay immediately when the script runs
 createAndShowOverlay();
 
 // Function to hide the overlay (to be called by Flutter when it's ready)
