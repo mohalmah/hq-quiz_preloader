@@ -1,4 +1,4 @@
-// Create a style element for our CSS
+/// Create a style element for our CSS
 const style = document.createElement('style');
 style.textContent = `
     #loader {
