@@ -39,6 +39,17 @@ scannerContainer.appendChild(dataPoints);
 // Create and append styles
 const scannerStyles = document.createElement('style');
 scannerStyles.textContent = `
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
     .scanner-container {
         position: relative;
         width: 300px;
@@ -177,7 +188,9 @@ overlay.style.cssText = `
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255);
+    background: linear-gradient(-45deg, #ffffff, #f8f8f8, #f0f0f0, #ffffff);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
     z-index: 999;
 `;
 
